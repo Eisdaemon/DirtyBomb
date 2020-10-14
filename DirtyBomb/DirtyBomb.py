@@ -52,17 +52,16 @@ def googleSearch():
     logging.info(f'Search for:"{url}"')
     #Open Website Shabang
     headers = {"user-agent": USER_AGENT}
-    res = s.get(url, headers=headers)
+    res = requests.get(url, headers=headers)
     res.raise_for_status
     #Find everything
     if res.status_code == 200:
         soup = bs4.BeautifulSoup(res.content, "html.parser")
-    for g in soup.find_all('div', class_='r'):
+    for g in soup.find_all('div', class_='g'):
         anchors = g.find_all('a')
         if anchors:
             link = anchors[0]['href']
             websites.append(link)
-    print(websites)
     return websites
 
 
