@@ -4,6 +4,7 @@
 import bs4, requests, os, random, time, re, logging
 import urllib.parse
 from urllib.parse import urlparse
+from pathlib import Path
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61"
 #Gets the random line for the question
 logging.basicConfig(filename = 'E:\\Dokumente\\TestPython\\dirtyBombLog.txt', level=logging.INFO, format=' %(asctime)s - %(levelname) s - %(message)s')
@@ -25,6 +26,25 @@ def formatForSearch():
 
 #Searches on google and clicks on links
 def googleSearch():
+    # Fill in your details here to be posted to the login form.
+    p = Path('E:\Dokumente\TestPython\googleLogIn.txt')
+    #Open Data
+    loginData = open(p)
+    Mail = loginData.readline()
+    psw = loginData.readline()
+    loginData.close()
+    #Cut \n from Mail
+    Mail = Mail.rstrip("\n")
+    form_data={'Email': Mail, 'Passwd': psw}
+
+    post = "https://accounts.google.com/signin/challenge/sl/password"
+
+    with requests.Session() as s:
+        soup = bs4.BeautifulSoup(s.get("https://accounts.google.com/ServiceLogin?elo=1").text, "html.parser")
+        for inp in soup.select("#gaia_loginform input[name]"):
+            if inp["name"] not in form_data:
+                form_data[inp["name"]] = inp["value"]
+    s.post(post, form_data)
     websites = []
     #Ties new and old together
     query = formatForSearch()
@@ -32,7 +52,7 @@ def googleSearch():
     logging.info(f'Search for:"{url}"')
     #Open Website Shabang
     headers = {"user-agent": USER_AGENT}
-    res = requests.get(url, headers=headers)
+    res = s.get(url, headers=headers)
     res.raise_for_status
     #Find everything
     if res.status_code == 200:
@@ -42,6 +62,7 @@ def googleSearch():
         if anchors:
             link = anchors[0]['href']
             websites.append(link)
+    print(websites)
     return websites
 
 
