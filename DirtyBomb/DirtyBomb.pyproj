@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b48b314d-0340-46f9-b747-9ee27891c93d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>youtube.py</StartupFile>
+    <StartupFile>startup.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DirtyBomb.py" />
-    <Compile Include="youtube.py">
+    <Compile Include="startup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="youtubeDirty.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
