@@ -6,7 +6,6 @@ import urllib.parse
 from urllib.parse import urlparse
 from pathlib import Path
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61"
-#Gets the random line for the question
 logging.basicConfig(filename = 'E:\\Dokumente\\TestPython\\dirtyBombLog.txt', level=logging.INFO, format=' %(asctime)s - %(levelname) s - %(message)s')
 logging.debug('Start of programm')
 form_data={}
@@ -20,7 +19,7 @@ def loginData():
     loginData.close()
     #Cut \n from Mail
     Mail = Mail.rstrip("\n")
-    form_data={'Email': Mail, 'Passwd': psw}
+    globals().update(form_data={'Email': Mail, 'Passwd': psw})
 
 def getQuestions(afile):
     line = random.choice(open(afile).readlines())
@@ -103,11 +102,13 @@ def openWebsites(sites):
 def connected():
     try:
         urllib.request.urlopen('http://google.com') #Python 3.x
+        time.sleep(1800)
         return True
     except:
         return False
 
 def execution():
+    loginData()
     while True:
         if(connected):
             try:
@@ -117,4 +118,4 @@ def execution():
             except:
                 logging.error('Unseccesfull execution')
                 time.sleep(random.randint(1800, 3600))
-execution()
+#execution()
