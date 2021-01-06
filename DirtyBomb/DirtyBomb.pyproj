@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b48b314d-0340-46f9-b747-9ee27891c93d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>module1.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,14 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DirtyBomb.py" />
-    <Compile Include="module1.py">
+    <Compile Include="DirtyBomb.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="startup.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="youtubeDirty.py">
+    <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
