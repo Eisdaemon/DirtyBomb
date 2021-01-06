@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b48b314d-0340-46f9-b747-9ee27891c93d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>startup.py</StartupFile>
+    <StartupFile>module1.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DirtyBomb.py" />
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="startup.py">
       <SubType>Code</SubType>
     </Compile>

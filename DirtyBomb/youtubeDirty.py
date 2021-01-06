@@ -3,7 +3,7 @@ import urllib.parse
 from urllib.parse import urlparse
 from pathlib import Path
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61"
-logging.basicConfig(filename = 'E:\\Dokumente\\TestPython\\youtubeDirtylog.txt', level=logging.INFO, format=' %(asctime)s - %(levelname) s - %(message)s')
+logging.basicConfig(filename = 'E:\\Dokumente\\TestPython\\dirtyBomblog.txt', level=logging.INFO, format=' %(asctime)s - %(levelname) s - %(message)s')
 form_data={}
 youtubeFile = 'E:\\Dokumente\\Dataset\\youtube.txt'
 
@@ -40,13 +40,19 @@ def format():
     words = line.split()
     #Rejoins with plus(Google Searches work with pluses not with spaces)
     searchTerm = '+'.join(words)
-    logging.debug(f'Searchterm:"{searchTerm}"')
+    try:
+        logging.debug(f'Searchterm:"{searchTerm}"')
+    except:
+        logging.info('The log did not work correctly :(')
     return searchTerm
 
 def sucheNachVideo():
     #Creates search Url
     url = "https://www.youtube.com/results?search_query="+format()
-    logging.info(f'Youtube Url:"{url}"')
+    try:
+        logging.info(f'Youtube Url:"{url}"')
+    except:
+        logging.info('The log did not work correctly :(')
     #Fills in Login
     loginData()
     #Search

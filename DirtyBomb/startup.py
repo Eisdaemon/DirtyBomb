@@ -15,10 +15,13 @@ def execution():
         if(connected):
             try:
                 DirtyBomb.openWebsites(DirtyBomb.googleSearch())
+                time.sleep(random.randint(450, 1800))
+                try:
+                    youtubeDirty.sucheNachVideo()
+                    time.sleep(random.randint(450, 1800))
+                except:
+                    logging.error('Probably some random chars')
                 logging.info('Succesfull execution')
-                time.sleep(random.randint(450, 1800))
-                youtubeDirty.sucheNachVideo()
-                time.sleep(random.randint(450, 1800))
             except:
                 logging.error('Unseccesfull execution')
                 time.sleep(random.randint(450, 3600))
