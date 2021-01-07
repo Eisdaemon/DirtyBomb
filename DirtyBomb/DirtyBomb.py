@@ -58,7 +58,11 @@ class DirtyBomb:
         return s
 
     def formatForSearch(self, filename):
-        line = DirtyBomb.getDirt(self, filename)
+        #Accepts either a filename from goofle search or a string for youtube
+        if type(filename) == str:
+            line = filename
+        else:
+            line = DirtyBomb.getDirt(self, filename)
         #Splits into Words
         words = line.split()
         #Rejoins with plus(Google Searches work with pluses not with spaces)
@@ -122,7 +126,7 @@ class DirtyBomb:
     #The only dataset which I found contains only the ids - nobody searches for Id. Therefore this scraps the title, without beeing logged in, in Order to sarch later more like a human
     def getTitle(self):
         #Gets the title
-        yId = DirtyBomb.getDirt(self.youtubeFile)
+        yId = DirtyBomb.getDirt(self, self.youtubeFile)
         yId = yId.rstrip("\n")
         #Stackoverflow
         youtubeAddress = 'https://www.youtube.com/watch?v='+yId+'&pbjreload=101'
@@ -133,12 +137,12 @@ class DirtyBomb:
         with urllib.request.urlopen(url) as response:
             response_text = response.read()
             data = json.loads(response_text.decode())
-            return(data['title'])
+            return(DirtyBomb.formatForSearch(self,data['title']))
 
     #Actual seach for the video - I do not know how much is tracked without clicking afterwards on a video, therfore "clicking" is an upcomming feature
     def youtubeBombExecution(self):
         #Creates search Url
-        url = "https://www.youtube.com/results?search_query="+DirtyBomb.formatForSearch(self, self.youtubeFile)
+        url = "https://www.youtube.com/results?search_query="+DirtyBomb.getTitle(self)
         try:
             logging.info(f'Youtube Url:"{url}"')
         except:
