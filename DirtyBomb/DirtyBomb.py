@@ -210,7 +210,7 @@ class Twitterbot:
                 clean.append(current)
         hashtag = random.choice(clean)
         logging.info(f'Hashtag:"{hashtag}"')
-        return(hastag)
+        return(hashtag)
     def twitterLogin(self):
             p = Path(self.twitterLogin)
             #Open Data
@@ -244,11 +244,11 @@ class Twitterbot:
         if method == 1:
             # sends the email to the email input 
             email.send_keys(mail)
-            logging.info('Logged into Twitter - With Mail')
+            logging.debug('Logged into Twitter - With Mail')
         else:
             #Now try with username
             email.send_keys(username)
-            logging.info('Logged into Twitter - With Username')
+            logging.debug('Logged into Twitter - With Username')
         # sends the password to the password input 
         password.send_keys(psw) 
         # executes RETURN key action 
@@ -257,6 +257,7 @@ class Twitterbot:
         time.sleep(2)
         #Was the Log In succesfull?
         if bot.current_url == 'https://twitter.com/login?email_disabled=true&redirect_after_login=%2F':
+            logging.debug('Mail Log In failed')
             Twitterbot.login(self, 2)
         time.sleep(2) 
   
@@ -271,7 +272,9 @@ class Twitterbot:
         """
   
         bot = self.bot 
+        logging.debug('Get Hashtag')
         hashtag = Twitterbot.getHashtags(self)
+        logging.debug('Bot for Like_retweet initalized')
         # fetches the latest tweets with the provided hashtag 
         bot.get( 
             'https://twitter.com/search?q=%23'+hashtag+'&src=trend_click&vertical=trends'
@@ -306,7 +309,12 @@ class Twitterbot:
         i = 0
         # traversing through the generated links 
         for link in links:
+            #Nothing for the Hashtag was found, another run is required
+            if len(links ==6):
+                break
+                Twitterbot.like_retweet(self)
             # opens individual links 
+            #print(len(links))
             bot.get(link) 
             time.sleep(4)
             if i == 3:
