@@ -310,9 +310,9 @@ class Twitterbot:
         # traversing through the generated links 
         for link in links:
             #Nothing for the Hashtag was found, another run is required
-            if len(links ==6):
-                break
-                Twitterbot.like_retweet(self)
+            #if len(links ==6):
+            #    break
+            #    Twitterbot.like_retweet(self)
             # opens individual links 
             #print(len(links))
             bot.get(link) 
