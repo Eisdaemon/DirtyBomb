@@ -20,6 +20,10 @@ def execution():
         'E:\Dokumente\TestPython\googleLogIn.txt',
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61"
         )
+    tb = DirtyBomb.Twitterbot(
+        'E:\Dokumente\TestPython\TwitterLogin.txt',
+        )
+    tb.login(1)
     while(True):
         if(connected):
             try:
@@ -34,4 +38,8 @@ def execution():
             except:
                 logging.error('Unseccesfull execution')
                 time.sleep(random.randint(450, 900))
+            try:
+                tb.like_retweet()
+            except:
+                logging.error('Unseccesfull execution')
 execution()
