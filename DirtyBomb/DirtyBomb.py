@@ -1,6 +1,6 @@
 #! Python 3.8
 # DirtyBomb - It is impossible not to generate data in the, therefore it generates a lot of confusing data
-import bs4, requests, os, random, time, re, logging, urllib.parse, json
+import bs4, requests, os, random, time, re, logging, urllib.parse, json, re
 from urllib.parse import urlparse
 from pathlib import Path
 #Selenium Stuff
@@ -64,10 +64,10 @@ class DirtyBomb:
 
     def formatForSearch(self, filename):
         #Accepts either a filename from goofle search or a string for youtube
-        if type(filename) == str:
-            line = filename
+        if 'Dataset\Questions.txt' in filename:
+           line = DirtyBomb.getDirt(self, filename)
         else:
-            line = DirtyBomb.getDirt(self, filename)
+            line = filename
         #Splits into Words
         words = line.split()
         #Rejoins with plus(Google Searches work with pluses not with spaces)
@@ -180,35 +180,36 @@ class Twitterbot:
 
     #Scrap Daily Trends
     def getHashtags(self):
-        #All Links are Saved here
+        CleanRegex = re.compile(r'>(.*)<')
+        CleanZweiRegex = re.compile(r'[\w\d\s_.-]+')
+        #All Links are Saved here         
         allSites=[]
         #Website where trends are from
-        url = 'https://trendstwitter.com/united-states'
+        url = 'https://twitter-trends.iamrohit.in/united-states'
         #Standard Scrapping of all Links
         headers= {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61"}
         res = requests.get(url, headers=headers)
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, 'html.parser')
         for a in soup.find_all('a', href=True, target='_blank'):
-            allSites.append(a['href'])
+            allSites.append(a)
         for i in range(len(allSites)):
-            #Clean Up the Links to get the Trends
-            current = allSites[i]
-            new = current.strip('http://twitter.com/search?q=')
-            new = new.replace('%', '')
-            new = new.replace('22', '')
-            new = new.replace('23', '')
-            new = new.replace('+', ' ')
-            allSites[i] = new
-        clean = []
-        for i in range(len(allSites)):
-            #Sort some Trends out
-            current = allSites[i]
-            if len(current)<=1 or '.com' in current or current in clean:
-                flag = 0
+            #Clean Up with Regex
+            current = str(allSites[i])
+            mo = CleanRegex.search(current)
+            current = mo.group()
+            mo2 = CleanZweiRegex.search(current)
+            current = mo2.group()
+            allSites[i] = current
+        cleanSites = []
+        for j in range(len(allSites)):
+            #Remove All other Link Titles; Super Annoying
+            current = allSites[j]
+            if 'Youtube Trends' in current or 'Google Trends' in current or 'Coupons' in current or 'Age Calculator' in current or 'Play DuckHunt Game' in current or 'Play 2048 Game' in current or ' YouTube Trends ' in current:
+                current = ''
             else:
-                clean.append(current)
-        hashtag = random.choice(clean)
+                cleanSites.append(current)
+        hashtag = random.choice(cleanSites)
         logging.info(f'Hashtag:"{hashtag}"')
         return(hashtag)
     def twitterLogin(self):
@@ -336,7 +337,7 @@ class Twitterbot:
                 ).click() 
                 # adding higher sleep time to avoid 
                 # getting detected as bot by twitter 
-                logging.info(f'Like and retweeted:"{link}"')
+                logging.info(f'Liked and retweeted:"{link}"')
                 time.sleep(10) 
             except: 
                 time.sleep(2) 
